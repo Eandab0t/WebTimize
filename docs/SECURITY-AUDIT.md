@@ -30,7 +30,7 @@ is listed under residual risk rather than treated as solved.
 | C-1 | Medium | Output-directory names were interpolated unquoted into generated Nginx/Caddy config, allowing directive injection. | Fixed |
 | C-2 | Medium | WebP/AVIF conversion opened and decoded images without an explicit pixel ceiling, so a decompression bomb could exhaust memory. | Fixed |
 | C-3 | Low | The repository had no `LICENSE` file and `pyproject.toml` had no license metadata, although every direct dependency is licensed. | Fixed: MIT license and PEP 639 metadata added |
-| C-4 | Low | Dependencies are unpinned and cssmin is old/unmaintained; no advisory scan was available offline. | Accepted risk, documented |
+| C-4 | Low | Dependencies are unpinned and cssmin is old/unmaintained; the current advisory scan found no known vulnerabilities. | Accepted risk, documented |
 | C-5 | Low | Symlink checks happen before `read_bytes()`, leaving a TOCTOU window if another process swaps a link during a build. | Residual, not reproduced |
 | C-6 | Info | `webtim-serve` inherits stdlib symlink behaviour when serving a directory; it is loopback-only by default and intended for trusted output. | Documented |
 | C-7 | Info | Non-image inputs are read whole into memory with no file-size cap. | Documented |
@@ -125,11 +125,11 @@ notices still need to be preserved when dependencies are redistributed.
   ranges. Reproducible builds are not guaranteed.
 - `cssmin` 0.2.0 is old. HTML minification uses the maintained `htmlmin2` distribution, which
   preserves the existing `htmlmin.Minifier` API without the removed `cgi` import.
-- `pip-audit` is not installed and no advisory database was consulted. No network calls
-  or third-party source uploads were made during this audit.
+- A networked `pip-audit --skip-editable --desc` scan found no known vulnerabilities in the
+  non-editable dependency set. The local `webtim` editable distribution was skipped because it
+  is not published to PyPI; source and regression tests cover it separately.
 
-Recommended follow-up: pin a tested set for release, run `pip-audit` in a networked
-release environment, and review the cssmin replacement before 1.0.
+Recommended follow-up: pin a tested set for release and review the cssmin replacement before 1.0.
 
 ## C-5 — symlink TOCTOU
 
