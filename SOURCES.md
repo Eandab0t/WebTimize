@@ -74,7 +74,8 @@ No nginx or Caddy binary is installed here; no Python 3.13 interpreter is availa
 - 0.3.0 checkpoint (2026-11-04): **130 tests**, all passing (`python -m pytest -q`, 10.82 s).
   This is historical; the browser-validation milestone below raised the total to 135, and
   image-orientation and identity-negotiation coverage raised the total to 138; the later
-  animated-PNG regression raises the current total to 139.
+  animated-PNG regression raised that checkpoint total to 139.
+- CLI terminal-identity coverage later added two more tests. The current baseline is **141 tests**.
   39 and 49 describe earlier commits, not the current suite.
 
 ### Bugs reproduced, then fixed (each has a regression test)

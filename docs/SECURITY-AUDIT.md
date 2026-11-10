@@ -29,7 +29,7 @@ is listed under residual risk rather than treated as solved.
 | --- | --- | --- | --- |
 | C-1 | Medium | Output-directory names were interpolated unquoted into generated Nginx/Caddy config, allowing directive injection. | Fixed |
 | C-2 | Medium | WebP/AVIF conversion opened and decoded images without an explicit pixel ceiling, so a decompression bomb could exhaust memory. | Fixed |
-| C-3 | Low | The repository has no `LICENSE` file and `pyproject.toml` has no license metadata, although every direct dependency is licensed. | Not fixed (release/legal decision) |
+| C-3 | Low | The repository had no `LICENSE` file and `pyproject.toml` had no license metadata, although every direct dependency is licensed. | Fixed: MIT license and PEP 639 metadata added |
 | C-4 | Low | Dependencies are unpinned and two (htmlmin, cssmin) are old/unmaintained; no advisory scan was available offline. | Accepted risk, documented |
 | C-5 | Low | Symlink checks happen before `read_bytes()`, leaving a TOCTOU window if another process swaps a link during a build. | Residual, not reproduced |
 | C-6 | Info | `webtim-serve` inherits stdlib symlink behaviour when serving a directory; it is loopback-only by default and intended for trusted output. | Documented |
@@ -111,11 +111,11 @@ AVIF conversion still requires Pillow with AVIF support; the guard runs first.
 
 ## C-3 — licensing
 
-There is no `LICENSE` file in the repository and no `license`/`license-files` field in
+The repository now has an MIT `LICENSE` and PEP 639 `license`/`license-files` metadata in
 `pyproject.toml`. Installed direct dependencies report compatible permissive licenses:
 Click BSD-3-Clause, htmlmin BSD, rjsmin Apache-2.0, cssmin (metadata has no license
-expression in the installed build), Brotli MIT, Pillow MIT-CMU, pytest MIT. This is a
-release/legal task, not a code vulnerability; no license text was invented.
+expression in the installed build), Brotli MIT, Pillow MIT-CMU, pytest MIT. Third-party
+notices still need to be preserved when dependencies are redistributed.
 
 ## C-4 — dependency maintenance
 
@@ -176,10 +176,11 @@ python -m pytest -q
 139 passed, 3 warnings in 13.11s
 ```
 
-The six security regressions above still pass. The suite now also contains five browser-validation
-regressions, two image-orientation/ICC regressions and an animated-PNG regression; the current
-total is 139. This audit was run before some of those fixes and does not claim to have exercised
-them.
+The six security regressions above still pass. The security-audit run recorded 139 tests after
+five browser-validation regressions, two image-orientation/ICC regressions and one animated-PNG
+regression; that was the audit-run total, not the current baseline. Two CLI terminal-identity
+tests were added later, and the current suite is 141 tests (`python -m pytest -q`: 141 passed,
+3 warnings). This audit does not claim to have exercised later fixes.
 
 ## Remaining risk
 
@@ -187,5 +188,5 @@ The build tool is designed for local, trusted input trees. Its strongest guarant
 that it does not intentionally follow links outside the input, does not overwrite the
 previous output on a failed build, and does not let a filename add server directives.
 It is not a sandbox: concurrent filesystem mutation, very large non-image files, a
-malicious local profile/deployment workflow, old minifiers, and an unlicensed
-distribution remain risks. Real server validation is still required.
+malicious local profile/deployment workflow and old minifiers remain risks. Third-party
+license and notice obligations must still be checked for any bundled dependency. Real server validation is still required.

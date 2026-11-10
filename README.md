@@ -238,3 +238,8 @@ SOURCES.md         why each default was chosen, and what was verified
 Internal competitive research is kept in the local-only `__development/docs/` directory. See
 [docs/asset-manifest.md](docs/asset-manifest.md) and [docs/build-report.md](docs/build-report.md) for
 the machine-readable outputs.
+
+## License
+
+WebTimize Compressor is released under the MIT License. See [LICENSE](LICENSE).
+Third-party dependencies retain their own licenses.

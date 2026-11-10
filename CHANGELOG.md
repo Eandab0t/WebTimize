@@ -8,10 +8,13 @@
   `--help` and once at the start of an interactive run. The mark is not printed in redirected
   output, `--version`, reports or manifests. The build summary wraps only non-zero transformation
   counts at 74 columns; compression behavior, options and output file shapes are unchanged.
-- No new dependency or packaging requirement was added.
+- No new runtime dependency was added. Packaging now requires `setuptools>=77` so the
+  project can use PEP 639 license metadata.
 
 ### Added
 
+- **Licensing**: MIT `LICENSE`, PEP 639 metadata and an explicit `license-files` entry. The
+  wheel and sdist include the license.
 - CLI identity regression coverage: compact/ASCII help mark and no banner in redirected build
   output. The suite is now **141 tests**.
 
@@ -85,7 +88,8 @@
 - 114 → 130 tests covering negotiation, manifest, AVIF, reference rewriting, minifier failures,
   symlinks, promotion rollback, report/manifest path safety, config quoting and image-size limits.
   (The browser-validation milestone added five more, and image-orientation coverage added two;
-  the total was 138 before the animated-PNG regression; the current total is 139.)
+  the total was 138 before the animated-PNG regression; that 0.3.0 checkpoint total was 139.
+  The Unreleased CLI terminal-identity tests raise the current baseline to 141.)
 
 ### Changed
 
