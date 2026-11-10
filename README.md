@@ -238,6 +238,14 @@ Internal competitive research is kept in the local-only `__development/docs/` di
 [docs/asset-manifest.md](docs/asset-manifest.md) and [docs/build-report.md](docs/build-report.md) for
 the machine-readable outputs.
 
+## PyPI release
+
+The repository contains a release-triggered publishing workflow using PyPI Trusted Publishing.
+Before the first release, configure a PyPI trusted publisher for this repository and the `pypi`
+GitHub environment. Then create and publish a GitHub Release whose tag matches the package version.
+The workflow builds and validates the distribution before publishing it; no long-lived PyPI API
+token is stored in GitHub.
+
 ## License
 
 WebTimize Compressor is released under the MIT License. See [LICENSE](LICENSE).
