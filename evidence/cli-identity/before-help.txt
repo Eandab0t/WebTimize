@@ -1,0 +1,20 @@
+Usage: webtim [OPTIONS] INPUT
+
+Options:
+  --version                    Show the version and exit.
+  -o, --output PATH            Output directory (default: <input>_optimized)
+  --dry-run                    Preview sizes without writing
+  -v, --verbose                Per-file sizes
+  --webp                       Convert PNG/JPEG to WebP when smaller (needs
+                               Pillow)
+  --inline-small BYTES         Inline images up to BYTES as data: URIs (2048 is
+                               a sane start; 0 = off)
+  --defer-scripts              Add defer to external scripts on pages with no
+                               inline code
+  --hash                       Rename assets to name.<hash>.ext for forever-
+                               caching
+  --emit-config [nginx|caddy]  Write a server snippet next to the output dir
+                               (not inside it, so it isn't served)
+  --report PATH                Write a machine-readable JSON build report to
+                               this path
+  --help                       Show this message and exit.

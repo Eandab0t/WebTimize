@@ -1,0 +1,13 @@
+  +--+     +--+
+  |  |     |  |  WEBTIMIZE COMPRESSOR 0.3.0
+  +--+-----+--+  local-first build optimizer
+
+Totals:
+  Input:      3 files       616 bytes
+  Output:     3 files       454 bytes (26.3% saved)
+  Over the wire, gzip:         377 bytes (38.8% vs input)
+  Over the wire, brotli:       258 bytes (58.1% vs input)
+  Processed: 3  skipped: 0  failed: 0
+  Transformations:
+    minified 3
+  Time: 0.01s

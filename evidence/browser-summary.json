@@ -1,0 +1,507 @@
+{
+  "schema_version": 1,
+  "tool": "webtim 0.3.0",
+  "environment": {
+    "browser": "Chrome/157.0.8103.39",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36",
+    "viewport": {
+      "width": 1440,
+      "height": 900,
+      "dpr": 1
+    },
+    "platform": "Windows 10.0.26200",
+    "python": "3.12.10"
+  },
+  "fixture": {
+    "files": 38,
+    "bytes": 1142345,
+    "routes": [
+      "/index.html",
+      "/docs/page.html",
+      "/docs/deep/page.html",
+      "/gallery.html",
+      "/defer.html",
+      "/about.html"
+    ]
+  },
+  "browser_audit": {
+    "variants": [
+      "original",
+      "default",
+      "hash",
+      "webp",
+      "avif",
+      "full",
+      "defer",
+      "avif-hash"
+    ],
+    "page_loads": 48,
+    "exceptions": 0,
+    "http_failures_excluding_favicon": 0,
+    "failed_requests": 0,
+    "broken_images": 0
+  },
+  "builds": {
+    "default": {
+      "counts": {
+        "discovered": 38,
+        "processed": 37,
+        "skipped": 1,
+        "failed": 0,
+        "output_files": 38
+      },
+      "sizes": {
+        "original_bytes": 1142345,
+        "output_bytes": 1140804,
+        "saved_bytes": 1541,
+        "saved_percent": 0.1,
+        "gzip_wire_bytes": 1136451,
+        "brotli_wire_bytes": 1135288
+      },
+      "transformations": {
+        "minified": 17,
+        "minified_unchanged": 1,
+        "webp": 0,
+        "webp_skipped": 0,
+        "avif": 0,
+        "avif_skipped": 0,
+        "inlined": 0,
+        "hashed": 0,
+        "hashed_skipped": 0,
+        "deferred": 0,
+        "dropped": 0
+      },
+      "warnings": [
+        "js/latin.js: not UTF-8, copied unchanged"
+      ]
+    },
+    "hash": {
+      "counts": {
+        "discovered": 38,
+        "processed": 37,
+        "skipped": 1,
+        "failed": 0,
+        "output_files": 38
+      },
+      "sizes": {
+        "original_bytes": 1142345,
+        "output_bytes": 1141227,
+        "saved_bytes": 1118,
+        "saved_percent": 0.1,
+        "gzip_wire_bytes": 1136798,
+        "brotli_wire_bytes": 1135548
+      },
+      "transformations": {
+        "minified": 17,
+        "minified_unchanged": 1,
+        "webp": 0,
+        "webp_skipped": 0,
+        "avif": 0,
+        "avif_skipped": 0,
+        "inlined": 0,
+        "hashed": 22,
+        "hashed_skipped": 6,
+        "deferred": 0,
+        "dropped": 0
+      },
+      "warnings": [
+        "js/latin.js: not UTF-8, copied unchanged",
+        "img/external.png: absolute URL reference, not renamed",
+        "img/runtime-*: assembled at runtime in js/app.js, not renamed",
+        "css/theme.css: referenced by css/app.css, not renamed",
+        "css/nested/more.css: referenced by css/theme.css, not renamed",
+        "js/lazy.js: referenced by js/module-main.js, not renamed",
+        "js/module-util.js: referenced by js/module-main.js, not renamed"
+      ]
+    },
+    "webp": {
+      "counts": {
+        "discovered": 38,
+        "processed": 37,
+        "skipped": 1,
+        "failed": 0,
+        "output_files": 38
+      },
+      "sizes": {
+        "original_bytes": 1142345,
+        "output_bytes": 1005427,
+        "saved_bytes": 136918,
+        "saved_percent": 12.0,
+        "gzip_wire_bytes": 1001050,
+        "brotli_wire_bytes": 999898
+      },
+      "transformations": {
+        "minified": 17,
+        "minified_unchanged": 1,
+        "webp": 6,
+        "webp_skipped": 4,
+        "avif": 0,
+        "avif_skipped": 0,
+        "inlined": 0,
+        "hashed": 0,
+        "hashed_skipped": 0,
+        "deferred": 0,
+        "dropped": 0
+      },
+      "warnings": [
+        "js/latin.js: not UTF-8, copied unchanged",
+        "img/external.png: absolute URL reference, not renamed",
+        "img/runtime-*: assembled at runtime in js/app.js, not renamed",
+        "img/existing.webp: already exists, img/existing.png not converted",
+        "img/picture.webp: already exists, img/picture.png not converted"
+      ]
+    },
+    "avif": {
+      "counts": {
+        "discovered": 38,
+        "processed": 37,
+        "skipped": 1,
+        "failed": 0,
+        "output_files": 42
+      },
+      "sizes": {
+        "original_bytes": 1142345,
+        "output_bytes": 1151543,
+        "saved_bytes": -9198,
+        "saved_percent": -0.8,
+        "gzip_wire_bytes": 1146621,
+        "brotli_wire_bytes": 1145444
+      },
+      "transformations": {
+        "minified": 17,
+        "minified_unchanged": 1,
+        "webp": 0,
+        "webp_skipped": 0,
+        "avif": 4,
+        "avif_skipped": 5,
+        "inlined": 0,
+        "hashed": 0,
+        "hashed_skipped": 0,
+        "deferred": 0,
+        "dropped": 0
+      },
+      "warnings": [
+        "js/latin.js: not UTF-8, copied unchanged",
+        "img/external.png: absolute URL reference, not renamed",
+        "img/runtime-*: assembled at runtime in js/app.js, not renamed",
+        "img/picture.avif: already exists, img/picture.png not converted",
+        "img/hero-640.jpg: only named where no <picture> fallback can be added (CSS, srcset or runtime), not converted",
+        "img/hero.jpg: only named where no <picture> fallback can be added (CSS, srcset or runtime), not converted"
+      ]
+    },
+    "full": {
+      "counts": {
+        "discovered": 38,
+        "processed": 37,
+        "skipped": 1,
+        "failed": 0,
+        "output_files": 37
+      },
+      "sizes": {
+        "original_bytes": 1142345,
+        "output_bytes": 1006293,
+        "saved_bytes": 136052,
+        "saved_percent": 11.9,
+        "gzip_wire_bytes": 1001548,
+        "brotli_wire_bytes": 1000348
+      },
+      "transformations": {
+        "minified": 17,
+        "minified_unchanged": 1,
+        "webp": 6,
+        "webp_skipped": 4,
+        "avif": 0,
+        "avif_skipped": 0,
+        "inlined": 1,
+        "hashed": 21,
+        "hashed_skipped": 6,
+        "deferred": 4,
+        "dropped": 1
+      },
+      "warnings": [
+        "js/latin.js: not UTF-8, copied unchanged",
+        "img/external.png: absolute URL reference, not renamed",
+        "img/runtime-*: assembled at runtime in js/app.js, not renamed",
+        "img/existing.webp: already exists, img/existing.png not converted",
+        "img/picture.webp: already exists, img/picture.png not converted",
+        "css/theme.css: referenced by css/app.css, not renamed",
+        "css/nested/more.css: referenced by css/theme.css, not renamed",
+        "js/lazy.js: referenced by js/module-main.js, not renamed",
+        "js/module-util.js: referenced by js/module-main.js, not renamed"
+      ]
+    },
+    "defer": {
+      "counts": {
+        "discovered": 38,
+        "processed": 37,
+        "skipped": 1,
+        "failed": 0,
+        "output_files": 38
+      },
+      "sizes": {
+        "original_bytes": 1142345,
+        "output_bytes": 1140828,
+        "saved_bytes": 1517,
+        "saved_percent": 0.1,
+        "gzip_wire_bytes": 1136459,
+        "brotli_wire_bytes": 1135277
+      },
+      "transformations": {
+        "minified": 17,
+        "minified_unchanged": 1,
+        "webp": 0,
+        "webp_skipped": 0,
+        "avif": 0,
+        "avif_skipped": 0,
+        "inlined": 0,
+        "hashed": 0,
+        "hashed_skipped": 0,
+        "deferred": 4,
+        "dropped": 0
+      },
+      "warnings": [
+        "js/latin.js: not UTF-8, copied unchanged"
+      ]
+    },
+    "avif-hash": {
+      "counts": {
+        "discovered": 38,
+        "processed": 37,
+        "skipped": 1,
+        "failed": 0,
+        "output_files": 42
+      },
+      "sizes": {
+        "original_bytes": 1142345,
+        "output_bytes": 1152065,
+        "saved_bytes": -9720,
+        "saved_percent": -0.9,
+        "gzip_wire_bytes": 1147033,
+        "brotli_wire_bytes": 1145784
+      },
+      "transformations": {
+        "minified": 17,
+        "minified_unchanged": 1,
+        "webp": 0,
+        "webp_skipped": 0,
+        "avif": 4,
+        "avif_skipped": 5,
+        "inlined": 0,
+        "hashed": 26,
+        "hashed_skipped": 6,
+        "deferred": 0,
+        "dropped": 0
+      },
+      "warnings": [
+        "js/latin.js: not UTF-8, copied unchanged",
+        "img/external.png: absolute URL reference, not renamed",
+        "img/runtime-*: assembled at runtime in js/app.js, not renamed",
+        "img/picture.avif: already exists, img/picture.png not converted",
+        "img/hero-640.jpg: only named where no <picture> fallback can be added (CSS, srcset or runtime), not converted",
+        "img/hero.jpg: only named where no <picture> fallback can be added (CSS, srcset or runtime), not converted",
+        "css/theme.css: referenced by css/app.css, not renamed",
+        "css/nested/more.css: referenced by css/theme.css, not renamed",
+        "js/lazy.js: referenced by js/module-main.js, not renamed",
+        "js/module-util.js: referenced by js/module-main.js, not renamed"
+      ]
+    }
+  },
+  "inline": [
+    {
+      "threshold": 0,
+      "output_bytes": 1140804,
+      "gzip_wire_bytes": 1136451,
+      "brotli_wire_bytes": 1135288,
+      "inlined": 0,
+      "dropped": 0,
+      "browser_resources": 24,
+      "data_images": 0,
+      "issues": 0
+    },
+    {
+      "threshold": 1,
+      "output_bytes": 1140804,
+      "gzip_wire_bytes": 1136451,
+      "brotli_wire_bytes": 1135288,
+      "inlined": 0,
+      "dropped": 0,
+      "browser_resources": 24,
+      "data_images": 0,
+      "issues": 0
+    },
+    {
+      "threshold": 16,
+      "output_bytes": 1140804,
+      "gzip_wire_bytes": 1136451,
+      "brotli_wire_bytes": 1135288,
+      "inlined": 0,
+      "dropped": 0,
+      "browser_resources": 24,
+      "data_images": 0,
+      "issues": 0
+    },
+    {
+      "threshold": 64,
+      "output_bytes": 1140804,
+      "gzip_wire_bytes": 1136451,
+      "brotli_wire_bytes": 1135288,
+      "inlined": 0,
+      "dropped": 0,
+      "browser_resources": 24,
+      "data_images": 0,
+      "issues": 0
+    },
+    {
+      "threshold": 128,
+      "output_bytes": 1140804,
+      "gzip_wire_bytes": 1136451,
+      "brotli_wire_bytes": 1135288,
+      "inlined": 0,
+      "dropped": 0,
+      "browser_resources": 24,
+      "data_images": 0,
+      "issues": 0
+    },
+    {
+      "threshold": 256,
+      "output_bytes": 1141241,
+      "gzip_wire_bytes": 1136607,
+      "brotli_wire_bytes": 1135427,
+      "inlined": 1,
+      "dropped": 1,
+      "browser_resources": 23,
+      "data_images": 1,
+      "issues": 0
+    },
+    {
+      "threshold": 512,
+      "output_bytes": 1141241,
+      "gzip_wire_bytes": 1136607,
+      "brotli_wire_bytes": 1135427,
+      "inlined": 1,
+      "dropped": 1,
+      "browser_resources": 23,
+      "data_images": 1,
+      "issues": 0
+    },
+    {
+      "threshold": 1024,
+      "output_bytes": 1141241,
+      "gzip_wire_bytes": 1136607,
+      "brotli_wire_bytes": 1135427,
+      "inlined": 1,
+      "dropped": 1,
+      "browser_resources": 23,
+      "data_images": 1,
+      "issues": 0
+    },
+    {
+      "threshold": 2048,
+      "output_bytes": 1141241,
+      "gzip_wire_bytes": 1136607,
+      "brotli_wire_bytes": 1135427,
+      "inlined": 1,
+      "dropped": 1,
+      "browser_resources": 23,
+      "data_images": 1,
+      "issues": 0
+    },
+    {
+      "threshold": 4096,
+      "output_bytes": 1144633,
+      "gzip_wire_bytes": 1139211,
+      "brotli_wire_bytes": 1137998,
+      "inlined": 2,
+      "dropped": 1,
+      "browser_resources": 23,
+      "data_images": 1,
+      "issues": 0
+    },
+    {
+      "threshold": 8192,
+      "output_bytes": 1153317,
+      "gzip_wire_bytes": 1146059,
+      "brotli_wire_bytes": 1144572,
+      "inlined": 3,
+      "dropped": 1,
+      "browser_resources": 22,
+      "data_images": 2,
+      "issues": 0
+    },
+    {
+      "threshold": 16384,
+      "output_bytes": 1233649,
+      "gzip_wire_bytes": 1195278,
+      "brotli_wire_bytes": 1192439,
+      "inlined": 7,
+      "dropped": 5,
+      "browser_resources": 18,
+      "data_images": 6,
+      "issues": 0
+    },
+    {
+      "threshold": 65536,
+      "output_bytes": 1636691,
+      "gzip_wire_bytes": 1483466,
+      "brotli_wire_bytes": 1421788,
+      "inlined": 10,
+      "dropped": 7,
+      "browser_resources": 16,
+      "data_images": 8,
+      "issues": 0
+    }
+  ],
+  "performance": {
+    "original": {
+      "cold_load_ms": 60.2,
+      "cold_encoded_body_bytes": 1118509,
+      "warm_median_load_ms": 28.8,
+      "cold_resources": 24
+    },
+    "default": {
+      "cold_load_ms": 51.2,
+      "cold_encoded_body_bytes": 1116729,
+      "warm_median_load_ms": 35.4,
+      "cold_resources": 24
+    },
+    "hash": {
+      "cold_load_ms": 55.9,
+      "cold_encoded_body_bytes": 1116759,
+      "warm_median_load_ms": 21.2,
+      "cold_resources": 24
+    },
+    "webp": {
+      "cold_load_ms": 54,
+      "cold_encoded_body_bytes": 970591,
+      "warm_median_load_ms": 31.7,
+      "cold_resources": 24
+    },
+    "avif": {
+      "cold_load_ms": 52.8,
+      "cold_encoded_body_bytes": 1063727,
+      "warm_median_load_ms": 38.0,
+      "cold_resources": 24
+    },
+    "full": {
+      "cold_load_ms": 51.9,
+      "cold_encoded_body_bytes": 970609,
+      "warm_median_load_ms": 22.2,
+      "cold_resources": 23
+    },
+    "build_wall_ms": {
+      "default": 247.9,
+      "full": 890.4
+    }
+  },
+  "screenshots": [
+    "browser-avif.jpg",
+    "browser-default.jpg",
+    "browser-full.jpg",
+    "browser-hash.jpg",
+    "browser-inline-0.jpg",
+    "browser-inline-2048.jpg",
+    "browser-inline-65536.jpg",
+    "browser-original.jpg",
+    "browser-webp.jpg"
+  ]
+}

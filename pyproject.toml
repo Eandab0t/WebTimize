@@ -17,7 +17,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-images = ["Pillow>=10"]   # only needed for --webp
+images = ["Pillow>=10"]   # needed for --webp / --avif
 test = ["pytest", "Pillow>=10"]
 
 [project.scripts]
@@ -29,3 +29,6 @@ packages = ["webtim"]
 
 [tool.setuptools.dynamic]
 version = {attr = "webtim.__version__"}
+
+[tool.pytest.ini_options]
+cache_dir = "__development/cache/pytest"

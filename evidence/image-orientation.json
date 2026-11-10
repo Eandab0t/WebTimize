@@ -1,0 +1,16 @@
+{
+  "check": "EXIF orientation after WebP/AVIF conversion",
+  "browser": "Chrome/157.0.8103.39",
+  "source": {
+    "format": "JPEG",
+    "pixel_width": 240,
+    "pixel_height": 120,
+    "exif_orientation": 6,
+    "displayed_width": 120,
+    "displayed_height": 240
+  },
+  "original": { "complete": true, "naturalWidth": 120, "naturalHeight": 240 },
+  "webp": { "complete": true, "naturalWidth": 120, "naturalHeight": 240 },
+  "avif": { "complete": true, "naturalWidth": 120, "naturalHeight": 240 },
+  "note": "The focused browser check used the converted files produced by webtim; it was not added to the large fixture."
+}

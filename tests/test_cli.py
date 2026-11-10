@@ -81,10 +81,32 @@ def test_undecodable_and_unminifiable_files_survive(site_dir, tmp_path):
     assert (out / "js/latin.js").read_bytes() == "var s = 'caf\xe9';".encode("latin-1")
 
 
+def test_negative_inline_threshold_is_rejected(site_dir, tmp_path):
+    r = CliRunner().invoke(main, [str(site_dir), "-o", str(tmp_path / "out"), "--inline-small", "-1"])
+    assert r.exit_code != 0
+    assert "zero or greater" in r.output
+    assert not (tmp_path / "out").exists()
+
+
 def test_webp_flag_without_pillow_is_a_clear_error(site_dir, monkeypatch):
     monkeypatch.setattr("importlib.util.find_spec", lambda name: None)
     r = CliRunner().invoke(main, [str(site_dir), "--webp", "--dry-run"])
     assert r.exit_code != 0 and "Pillow" in r.output
+
+
+def test_avif_flag_without_avif_support_is_a_clear_error(site_dir, monkeypatch):
+    monkeypatch.setattr("PIL.features.check", lambda name: False)
+    r = CliRunner().invoke(main, [str(site_dir), "--avif", "--dry-run"])
+    assert r.exit_code != 0 and "AVIF" in r.output
+
+
+def test_tiny_text_file_gets_no_sidecar(site_dir, tmp_path):
+    """A sidecar larger than the file is never written (compression must not grow output)."""
+    (site_dir / "tiny.txt").write_text("x")
+    out = tmp_path / "out"
+    run(site_dir, "-o", out)
+    assert (out / "tiny.txt").read_text() == "x"
+    assert not (out / "tiny.txt.gz").exists() and not (out / "tiny.txt.br").exists()
 
 
 def test_no_web_files(tmp_path):
@@ -166,4 +188,18 @@ def test_identity_is_one_name():
     assert CliRunner().invoke(serve_main, ["--version"]).output.strip() == (
         f"webtim-serve, version {webtim.__version__}"
     )
+
+
+def test_help_has_a_compact_ascii_mark():
+    output = CliRunner().invoke(main, ["--help"], prog_name="webtim").output
+    assert "WEBTIMIZE COMPRESSOR" in output
+    assert "+--+-----+--+" in output
+    assert all(ord(char) < 128 for char in output)
+    assert len(output.splitlines()) < 40
+
+
+def test_redirected_build_output_has_no_banner(site_dir, tmp_path):
+    output = run(site_dir, "-o", tmp_path / "out", "--dry-run")
+    assert "WEBTIMIZE COMPRESSOR" not in output
+    assert "+--+" not in output
 

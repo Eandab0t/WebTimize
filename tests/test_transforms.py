@@ -54,6 +54,15 @@ def test_defer_skips_pages_with_inline_code_but_not_data_blocks():
     assert T.defer_scripts(ok) == 1
 
 
+def test_defer_does_not_mistake_a_filename_for_an_attribute():
+    """`defer-dep.js` is a URL, not an existing defer attribute."""
+    site = {P("i.html"): b'<script src="defer-dep.js"></script><script src="async-use.js"></script>'}
+    assert T.defer_scripts(site) == 2
+    out = site[P("i.html")].decode()
+    assert '<script src="defer-dep.js" defer>' in out
+    assert '<script src="async-use.js" defer>' in out
+
+
 def test_hash_names_rewrites_relative_and_root_refs():
     site = {
         P("index.html"): b'<link href="css/app.css"><script src="/js/app.js"></script>',

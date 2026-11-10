@@ -1,0 +1,28 @@
+  +--+     +--+
+  |  |     |  |  WEBTIMIZE COMPRESSOR 0.3.0
+  +--+-----+--+  local-first build optimizer
+
+Usage: webtim [OPTIONS] INPUT
+
+Options:
+  --version                    Show the version and exit.
+  -o, --output PATH            Output directory (default: <input>_optimized)
+  --dry-run                    Preview sizes without writing
+  -v, --verbose                Per-file sizes
+  --webp                       Convert PNG/JPEG to WebP when smaller (needs
+                               Pillow)
+  --avif                       Convert PNG/JPEG to AVIF when smaller, with a
+                               <picture> fallback (needs Pillow with AVIF)
+  --inline-small BYTES         Inline images up to BYTES as data: URIs (2048
+                               is a sane start; 0 = off; negative is rejected)
+  --defer-scripts              Add defer to external scripts on pages with no
+                               inline code
+  --hash                       Rename assets to name.<hash>.ext for forever-
+                               caching
+  --emit-config [nginx|caddy]  Write a server snippet next to the output dir
+                               (not inside it, so it isn't served)
+  --report PATH                Write a machine-readable JSON build report to
+                               this path
+  --manifest PATH              Write a JSON manifest mapping original assets
+                               to their hashed names
+  --help                       Show this message and exit.

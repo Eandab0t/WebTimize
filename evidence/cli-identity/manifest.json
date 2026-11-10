@@ -1,0 +1,28 @@
+{
+  "assets": [
+    {
+      "final": "css/site.aab1e832.css",
+      "hashed": true,
+      "original": "css/site.css",
+      "reason": null,
+      "sha256": "aab1e8329ff524fbe853154769ac88613ad06f5aeab33d5bf064b16aef1e1371",
+      "type": "text/css"
+    },
+    {
+      "final": "js/app.6eeb2214.js",
+      "hashed": true,
+      "original": "js/app.js",
+      "reason": null,
+      "sha256": "6eeb221468d59a102aa18702a0f67ad43ac698c80f2bd9b459ec0a24d5fee1a5",
+      "type": "text/javascript"
+    }
+  ],
+  "dry_run": false,
+  "hash_algorithm": "sha256",
+  "hash_length": 8,
+  "schema_version": 1,
+  "tool": {
+    "name": "webtim",
+    "version": "0.3.0"
+  }
+}
