@@ -12,7 +12,7 @@ license-files = ["LICENSE"]
 requires-python = ">=3.10"
 dependencies = [
     "click>=8.0",
-    "htmlmin>=0.1",
+    "htmlmin2>=0.1.13",
     "rjsmin>=1.2",  # replaced jsmin: it drops spaces inside template literals
     "cssmin>=0.2",
     "brotli>=1.0",

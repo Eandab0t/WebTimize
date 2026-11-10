@@ -1,12 +1,6 @@
-import subprocess
-import sys
-from pathlib import Path
-
 from webtim.css_minify import minify as minify_css
-from webtim.html_minify import _cgi_stand_in, minify as minify_html
+from webtim.html_minify import minify as minify_html
 from webtim.js_minify import minify as minify_js
-
-ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_html_keeps_pre_and_textarea_verbatim():
@@ -51,29 +45,3 @@ def test_css_keeps_important_and_media_queries():
 def test_js_with_a_nested_template_literal_is_left_unminified():
     src = "const a = `x ${ `y ${1}` }`; console.log(a);"
     assert minify_js(src) == src
-
-
-def test_cgi_stand_in_matches_legacy_escape_semantics():
-    module = _cgi_stand_in()
-    assert module.escape('<a href="x">&') == '&lt;a href="x"&gt;&amp;'
-    assert module.escape('<a href="x">', quote=True) == '&lt;a href=&quot;x&quot;&gt;'
-
-
-def test_html_minify_imports_when_the_stdlib_cgi_module_is_gone():
-    """Simulate 3.13: block `import cgi` entirely in a fresh interpreter, then minify HTML."""
-    code = (
-        "import sys\n"
-        "class Block:\n"
-        "    def find_spec(self, name, path=None, target=None):\n"
-        "        if name == 'cgi':\n"
-        "            raise ModuleNotFoundError(\"No module named 'cgi'\")\n"
-        "        return None\n"
-        "sys.meta_path.insert(0, Block())\n"
-        "import webtim.html_minify as hm\n"
-        "print(hm.minify('<!-- c --><div>hi</div>'))\n"
-        "print('shim' if 'stand-in' in (sys.modules['cgi'].__doc__ or '') else 'wrong')\n"
-    )
-    result = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, cwd=ROOT)
-    assert result.returncode == 0, result.stderr
-    assert "<div>hi</div>" in result.stdout
-    assert "shim" in result.stdout

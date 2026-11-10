@@ -189,7 +189,7 @@ using it on a new site.
 ## Tests and browser validation
 
 `pytest` (needs Pillow; node is used for JS round-trip tests when present). Current baseline:
-**141 tests passing** (Python 3.12.10, Windows), including browser-found regressions for runtime
+**139 tests passing** (Python 3.12.10, Windows), including browser-found regressions for runtime
 filename prefixes and `defer`/`async` filenames, plus EXIF-orientation, ICC-profile and animated-PNG
 image tests. A real headed Chrome audit loaded 48 pages across
 eight builds and six routes with zero exceptions, failed requests or broken images; see
@@ -225,9 +225,8 @@ SOURCES.md         why each default was chosen, and what was verified
 - Inlining trades request count for bytes; it is not automatically a net win. On the browser fixture,
   256–2048 bytes dropped one request but increased output by 437 bytes, while 16 KiB/64 KiB grew it
   by 8%/43%.
-- `htmlmin` imports the deprecated `cgi` module, removed in Python 3.13. `webtim.html_minify`
-  installs a minimal stand-in when the stdlib module is absent (htmlmin never calls it). The
-  simulation is tested; no real 3.13 interpreter was available here.
+- HTML minification uses the maintained `htmlmin2` distribution, which keeps the compatible
+  `htmlmin.Minifier` API without depending on Python's removed `cgi` module.
 - AVIF keeps the original as a fallback, so the output directory grows by the AVIF copy; browsers
   without AVIF fetch the original. CSS-, `srcset`- and JS-referenced images are not converted.
 - Animated PNGs are not converted to WebP or AVIF: flattening them would discard frames. Animated

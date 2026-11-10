@@ -16,10 +16,13 @@
 - **Licensing**: MIT `LICENSE`, PEP 639 metadata and an explicit `license-files` entry. The
   wheel and sdist include the license.
 - CLI identity regression coverage: compact/ASCII help mark and no banner in redirected build
-  output. The suite is now **141 tests**.
+  output. The suite is now **139 tests**.
 
 ### Fixed
 
+- **Python 3.13 installation**: replaced the obsolete `htmlmin` distribution, whose source build
+  imports the removed `cgi` module before WebTimize can install its runtime shim, with the
+  compatible `htmlmin2` distribution. Python 3.13 CI now exercises the real install path.
 - **Runtime filename prefixes**: `--hash` and `--webp` renamed `/img/runtime-1.png` when JavaScript
   built it as `"/img/runtime-" + n + ".png"`, leaving the page with a 404. Runtime detection now
   captures the literal filename prefix as well as directory prefixes, without blocking unrelated
@@ -44,7 +47,7 @@
 
 - Headed Chrome 157.0.8103.39 loaded all six fixture routes for eight build variants (48 page loads)
   with zero exceptions, failed requests or broken images. The browser validation ran on 139 tests;
-  the current suite has **141 tests** after the CLI identity checks.
+  the current suite has **139 tests** after removing obsolete cgi-compatibility coverage.
 - Manifests and reports were checked against real output bytes; repeated full-option builds produced
   an identical tree and byte-identical manifest.
 - See `docs/BROWSER-VALIDATION.md` and `evidence/` for the fixture, measurements, screenshots

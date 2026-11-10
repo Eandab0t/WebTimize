@@ -30,7 +30,7 @@ is listed under residual risk rather than treated as solved.
 | C-1 | Medium | Output-directory names were interpolated unquoted into generated Nginx/Caddy config, allowing directive injection. | Fixed |
 | C-2 | Medium | WebP/AVIF conversion opened and decoded images without an explicit pixel ceiling, so a decompression bomb could exhaust memory. | Fixed |
 | C-3 | Low | The repository had no `LICENSE` file and `pyproject.toml` had no license metadata, although every direct dependency is licensed. | Fixed: MIT license and PEP 639 metadata added |
-| C-4 | Low | Dependencies are unpinned and two (htmlmin, cssmin) are old/unmaintained; no advisory scan was available offline. | Accepted risk, documented |
+| C-4 | Low | Dependencies are unpinned and cssmin is old/unmaintained; no advisory scan was available offline. | Accepted risk, documented |
 | C-5 | Low | Symlink checks happen before `read_bytes()`, leaving a TOCTOU window if another process swaps a link during a build. | Residual, not reproduced |
 | C-6 | Info | `webtim-serve` inherits stdlib symlink behaviour when serving a directory; it is loopback-only by default and intended for trusted output. | Documented |
 | C-7 | Info | Non-image inputs are read whole into memory with no file-size cap. | Documented |
@@ -113,23 +113,23 @@ AVIF conversion still requires Pillow with AVIF support; the guard runs first.
 
 The repository now has an MIT `LICENSE` and PEP 639 `license`/`license-files` metadata in
 `pyproject.toml`. Installed direct dependencies report compatible permissive licenses:
-Click BSD-3-Clause, htmlmin BSD, rjsmin Apache-2.0, cssmin (metadata has no license
+Click BSD-3-Clause, htmlmin2 BSD, rjsmin Apache-2.0, cssmin (metadata has no license
 expression in the installed build), Brotli MIT, Pillow MIT-CMU, pytest MIT. Third-party
 notices still need to be preserved when dependencies are redistributed.
 
 ## C-4 — dependency maintenance
 
-- Direct runtime dependencies: `click>=8.0`, `htmlmin>=0.1`, `rjsmin>=1.2`,
+- Direct runtime dependencies: `click>=8.0`, `htmlmin2>=0.1.13`, `rjsmin>=1.2`,
   `cssmin>=0.2`, `brotli>=1.0`; optional `Pillow>=10`.
 - No lockfile or hashes; a fresh install can pick arbitrary future versions within the
   ranges. Reproducible builds are not guaranteed.
-- `htmlmin` 0.1.12 imports the removed `cgi` module; the project installs a local shim on
-  Python 3.13. `cssmin` 0.2.0 is similarly old.
+- `cssmin` 0.2.0 is old. HTML minification uses the maintained `htmlmin2` distribution, which
+  preserves the existing `htmlmin.Minifier` API without the removed `cgi` import.
 - `pip-audit` is not installed and no advisory database was consulted. No network calls
   or third-party source uploads were made during this audit.
 
 Recommended follow-up: pin a tested set for release, run `pip-audit` in a networked
-release environment, and review the htmlmin/cssmin replacements before 1.0.
+release environment, and review the cssmin replacement before 1.0.
 
 ## C-5 — symlink TOCTOU
 
@@ -176,11 +176,9 @@ python -m pytest -q
 139 passed, 3 warnings in 13.11s
 ```
 
-The six security regressions above still pass. The security-audit run recorded 139 tests after
-five browser-validation regressions, two image-orientation/ICC regressions and one animated-PNG
-regression; that was the audit-run total, not the current baseline. Two CLI terminal-identity
-tests were added later, and the current suite is 141 tests (`python -m pytest -q`: 141 passed,
-3 warnings). This audit does not claim to have exercised later fixes.
+The six security regressions above still pass. The current suite is 139 tests
+(`python -m pytest -q`: 139 passed, 46 warnings in the htmlmin2 verification environment).
+The warnings are dependency deprecations and Pillow's expected oversized-fixture warning.
 
 ## Remaining risk
 

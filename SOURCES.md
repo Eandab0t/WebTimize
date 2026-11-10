@@ -75,8 +75,9 @@ No nginx or Caddy binary is installed here; no Python 3.13 interpreter is availa
   This is historical; the browser-validation milestone below raised the total to 135, and
   image-orientation and identity-negotiation coverage raised the total to 138; the later
   animated-PNG regression raised that checkpoint total to 139.
-- CLI terminal-identity coverage later added two more tests. The current baseline is **141 tests**.
-  39 and 49 describe earlier commits, not the current suite.
+- CLI terminal-identity coverage later added two more tests, and obsolete cgi-compatibility tests
+  were later removed after the htmlmin2 migration. The current baseline is **139 tests**. 39 and
+  49 describe earlier commits, not the current suite.
 
 ### Bugs reproduced, then fixed (each has a regression test)
 
@@ -104,8 +105,8 @@ the AVIF copy and only non-AVIF browsers fetch the original.
 
 ### Not verified here (blocked)
 
-- **Python 3.13**: the cgi stand-in is tested by blocking `import cgi` in a fresh interpreter and
-minifying HTML; no 3.13 interpreter exists on this machine, so the suite has not run on 3.13.
+- **Python 3.13**: the local machine has no 3.13 interpreter; the real install path is covered by
+  the GitHub Actions matrix after the htmlmin2 migration.
 - **nginx / Caddy**: no binaries available. The nginx 1.24 result above is historical; the Caddy
 snippet and real Brotli serving remain unverified.
 - **GitHub Actions**: workflow added (`.github/workflows/ci.yml`, Python 3.10-3.13 on Linux and
@@ -113,15 +114,14 @@ Windows) but never executed here.
 
 ### Decisions
 
-- No new runtime dependencies. AVIF uses the already-optional Pillow (11.3+ ships AVIF); the cgi
-stand-in is a few lines instead of replacing htmlmin.
+- HTML minification uses the maintained htmlmin2 distribution, whose `htmlmin.Minifier` API is
+  compatible with the existing adapter. AVIF remains opt-in through Pillow.
 - Symlinks that resolve outside the input (or are broken) are skipped with a warning instead of
 being followed into the output.
 - Percent-encoded references are rewritten in both spellings, because a file with a space can only
 be linked as `%20`.
-- `htmlmin` never calls `cgi` (only imports it), so the stand-in is behaviourally inert. Minifier
-output was probed (`calc()`, grid, `pre`, `textarea`, conditional comments, attribute values with
-`>`) before its edge cases were written into tests.
+- The htmlmin2 adapter was verified against the existing HTML edge cases (`pre`, `textarea`,
+conditional comments and attribute values with `>`).
 
 ## Browser validation (2026-11-06)
 
