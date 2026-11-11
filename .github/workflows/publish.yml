@@ -20,6 +20,29 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Verify release tag matches package version
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          python - <<'PY'
+          import ast
+          import os
+          from pathlib import Path
+
+          tag = os.environ["RELEASE_TAG"].removeprefix("v")
+          tree = ast.parse(Path("webtim/__init__.py").read_text(encoding="utf-8"))
+          version = next(
+              node.value.value
+              for node in tree.body
+              if isinstance(node, ast.Assign)
+              and any(isinstance(target, ast.Name) and target.id == "__version__" for target in node.targets)
+              and isinstance(node.value, ast.Constant)
+              and isinstance(node.value.value, str)
+          )
+          if version != tag:
+              raise SystemExit(f"release tag {tag!r} does not match package version {version!r}")
+          PY
+
       - name: Build distribution
         run: |
           python -m pip install --upgrade pip build twine
