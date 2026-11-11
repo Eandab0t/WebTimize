@@ -177,8 +177,8 @@ python -m pytest -q
 ```
 
 The six security regressions above still pass. The current suite is 139 tests
-(`python -m pytest -q`: 139 passed, 46 warnings in the htmlmin2 verification environment).
-The warnings are dependency deprecations and Pillow's expected oversized-fixture warning.
+(`python -m pytest -q`: 139 passed, 3 warnings).
+The warnings are the expected `cgi` deprecation and Pillow's oversized-fixture warning.
 
 ## Remaining risk
 
