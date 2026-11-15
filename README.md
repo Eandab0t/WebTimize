@@ -1,3 +1,5 @@
+![WebTimize Compressor social preview](https://repository-images.githubusercontent.com/1436505805/4130de93-e7e8-4fc1-82d3-128815c94216)
+
 # WebTimize Compressor
 
 WebTimize Compressor is the build step for a static site. It minifies HTML, CSS and JavaScript,
