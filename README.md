@@ -248,5 +248,10 @@ token is stored in GitHub.
 
 ## License
 
+## WebTimize suite
+
+- [WebTimize Live](https://github.com/Eandab0t/WebTimize-Live) improves supported pages after deployment.
+- [WebTimize Inspector](https://github.com/Eandab0t/WebTimize-Inspector) audits websites and produces actionable reports.
+
 WebTimize Compressor is released under the MIT License. See [LICENSE](LICENSE).
 Third-party dependencies retain their own licenses.
