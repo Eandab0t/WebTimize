@@ -1,9 +1,12 @@
 # WebTimize Compressor
 
-Local-first, build-time optimizer for static sites. It minifies HTML/CSS/JS, writes Brotli and gzip
-sidecars, optionally converts/inlines images (WebP or AVIF), cache-busts assets, defers scripts, and
-emits nginx/Caddy configuration plus a JSON build report and an asset manifest. The Python package
-and both commands remain named `webtim`.
+WebTimize Compressor is the build step for a static site. It minifies HTML, CSS and JavaScript,
+creates Brotli/gzip sidecars, can convert or inline images, fingerprints assets, and writes reports
+that can be used by deployment tooling. The command and Python package are both named `webtim`.
+
+It is part of the [WebTimize suite](https://github.com/Eandab0t/WebTimize). [WebTimize Live](https://github.com/Eandab0t/WebTimize-Live)
+handles cleanup after deployment, while [WebTimize Inspector](https://github.com/Eandab0t/WebTimize-Inspector)
+audits a site and its deployment output. The tools are independent.
 
 ```bash
 pip install -e ".[images]"          # Pillow only needed for --webp / --avif
@@ -39,14 +42,6 @@ machine-readable output changed for the branding.
 
 The captures and exact before/after behavior are recorded in
 [docs/CLI-IDENTITY.md](docs/CLI-IDENTITY.md).
-
-## Part of the WebTimize suite
-
-WebTimize Compressor makes a site faster **before** it is deployed. Its sibling,
-[WebTimize Live](https://github.com/Eandab0t/WebTimize-Live), improves pages **after** deployment
-with reversible, site-specific CSS. They share no runtime, no server and no account; installing one
-is never required for the other. The build report and asset manifest are deliberately
-machine-readable so deployment tooling can consume them without knowing about Live.
 
 ## What each option does (all off by default except minify + sidecars)
 
@@ -247,11 +242,6 @@ The workflow builds and validates the distribution before publishing it; no long
 token is stored in GitHub.
 
 ## License
-
-## WebTimize suite
-
-- [WebTimize Live](https://github.com/Eandab0t/WebTimize-Live) improves supported pages after deployment.
-- [WebTimize Inspector](https://github.com/Eandab0t/WebTimize-Inspector) audits websites and produces actionable reports.
 
 WebTimize Compressor is released under the MIT License. See [LICENSE](LICENSE).
 Third-party dependencies retain their own licenses.
