@@ -76,9 +76,14 @@ def _resolve(page: PurePosixPath, ref: str) -> PurePosixPath | None:
     return PurePosixPath(path)
 
 
+def _url(path) -> str:
+    """The URL spelling of a site path: percent-encoded, `/` kept; URL-safe paths are unchanged."""
+    return quote(str(path), safe="/")
+
+
 def _spellings(path: str) -> list[str]:
     """The literal spellings one URL path can take: raw, and percent-encoded when it differs."""
-    encoded = quote(path, safe="/")
+    encoded = _url(path)
     return [path] if encoded == path else [path, encoded]
 
 
@@ -91,18 +96,16 @@ def rewrite_refs(site: Site, renames: dict) -> None:
     for page in [p for p in site if p.suffix in TEXT]:
         text = _text(site, page)
         for old, new in renames.items():
-            rel_old = posixpath.relpath(old, page.parent)
-            rel_new = posixpath.relpath(new, page.parent)
-            pairs = []
-            for o, n in ((rel_old, rel_new), ("/" + str(old), "/" + str(new))):
-                pairs.extend(zip(_spellings(o), _spellings(n)))
-            seen = set()
-            for o, n in pairs:
-                if o in seen:  # the raw and encoded spellings can coincide
-                    continue
-                seen.add(o)
-                text = re.sub(r"(?<![\w./-])(\./)?" + re.escape(o) + r"(?=[\s\"'`)?#>,;]|$)",
-                              lambda m, n=n: (m.group(1) or "") + n, text)
+            # A browser resolves the attribute as a URL, so the new path is written as one: `#`,
+            # `%`, a space or non-ASCII would otherwise name a fragment, a different decoding or
+            # another file. URL-safe names are written unchanged.
+            for old_ref, new_ref in (
+                (posixpath.relpath(old, page.parent), _url(posixpath.relpath(new, page.parent))),
+                ("/" + str(old), "/" + _url(new)),
+            ):
+                for spelling in _spellings(old_ref):
+                    pattern = r"(?<![\w./-])(\./)?" + re.escape(spelling) + r"(?=[\s\"'`)?#>,;]|$)"
+                    text = re.sub(pattern, lambda m: (m.group(1) or "") + new_ref, text)
         site[page] = text.encode("utf-8")
 
 
@@ -171,6 +174,28 @@ def _inside_picture(html: str, position: int) -> bool:
     return head.rfind("<picture") > head.rfind("</picture>")
 
 
+# A written reference misses the file it names in two ways; both reach another path.
+_URL_MISSES = (("#", "a fragment starts at '#'"), ("%", "'%' sequences are percent-decoded"))
+
+
+def _record_unresolved_ref(skipped: dict | None, page, ref: str, target, site) -> None:
+    """Report an `<img src>` that names its file literally but not as a URL, so no `<picture>`.
+
+    A `#` or `%` in the name means the reference reaches no site file although the file exists.
+    """
+    if skipped is None or target is None:
+        return
+    base = "/" if ref.startswith("/") else str(page.parent)
+    literal = PurePosixPath(posixpath.normpath(posixpath.join(base, ref)).lstrip("/"))
+    if literal == target or literal not in site:
+        return
+    causes = [reason for mark, reason in _URL_MISSES if mark in ref]
+    skipped[literal] = (
+        f"{literal}: the reference '{ref}' does not resolve as a URL to this file "
+        f"({', '.join(causes) or 'URL decoding differs'}), so no AVIF alternate was attached"
+    )
+
+
 # shortcut: AVIF is only added where an <img src> can carry a <picture> fallback; CSS-only refs
 # cannot, so they are reported and left alone
 def to_avif(site: Site, skipped: dict | None = None, quality: int = 80) -> dict:
@@ -220,13 +245,12 @@ def to_avif(site: Site, skipped: dict | None = None, quality: int = 80) -> dict:
             found = _SRC_ATTR.search(tag)
             if not found or _inside_picture(html, match.start()):
                 return tag
-            target = _resolve(page, found.group(1))
+            ref = found.group(1)
+            target = _resolve(page, ref)
             if target not in candidates:
+                _record_unresolved_ref(skipped, page, ref, target, site)
                 return tag
-            ref, name = found.group(1), target.with_suffix(".avif").name
-            if "%" in ref:
-                name = quote(name)
-            new_ref = ref[: ref.rfind("/") + 1] + name
+            new_ref = ref[: ref.rfind("/") + 1] + _url(target.with_suffix(".avif").name)
             used.add(target)
             return f'<picture><source srcset="{new_ref}" type="image/avif">{tag}</picture>'
 
@@ -237,9 +261,10 @@ def to_avif(site: Site, skipped: dict | None = None, quality: int = 80) -> dict:
         if target in used:
             moves[target] = (target.with_suffix(".avif"), data)
         elif skipped is not None:
-            skipped[target] = (
+            skipped.setdefault(
+                target,
                 f"{target}: only named where no <picture> fallback can be added "
-                "(CSS, srcset or runtime), not converted"
+                "(CSS, srcset or runtime), not converted",
             )
     for new, data in moves.values():
         site[new] = data  # the original stays: it is the fallback

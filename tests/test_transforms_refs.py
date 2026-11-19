@@ -1,9 +1,11 @@
 import hashlib
 import io
+import re
 from pathlib import PurePosixPath as P
-from urllib.parse import quote
+from urllib.parse import quote, unquote, urlsplit
 
-from PIL import Image
+import pytest
+from PIL import Image, features
 
 from tests.conftest import banner_png, png
 from webtim import transforms as T
@@ -23,6 +25,22 @@ def test_percent_encoded_reference_is_rewritten_after_hashing():
     assert renamed.name.startswith("my file.")
     assert f"img/{quote(renamed.name)}" in html  # the reference stays percent-encoded
     assert "img/my%20file.png" not in html
+
+
+def test_hashed_references_decode_to_the_file_written_for_awkward_names():
+    """A browser reads the attribute as a URL: `%`, `#`, space and non-ASCII must still name the file."""
+    names = ["img/nested/deep/icon.png", "img/with space.png", "img/pct%2ename.png",
+             "img/pic#1.png", "img/logo-\u00fc.png"]
+    page = "".join(f'<img src="{name}">' for name in names)
+    site = {P("index.html"): page.encode("utf-8"), **{P(name): png((2, 2)) for name in names}}
+    T.hash_names(site)
+    html = site[P("index.html")].decode("utf-8")
+    refs = re.findall(r'src="([^"]+)"', html)
+    assert len(refs) == len(names)
+    for ref in refs:
+        assert P(unquote(urlsplit(ref).path)) in site, f"{ref} does not name a written file"
+    assert "img/nested/deep/icon." in html  # ordinary names stay unencoded
+    assert "%20" in html and "%252e" in html and "%23" in html and "%C3%BC" in html
 
 
 def test_percent_encoded_root_relative_reference_is_rewritten():
@@ -168,3 +186,11 @@ def test_avif_does_not_overwrite_an_existing_avif():
     site = {P("i.html"): b'<img src="a.png">', P("a.png"): banner_png(), P("a.avif"): b"existing"}
     assert T.to_avif(site) == {}
     assert site[P("a.avif")] == b"existing"
+
+
+@pytest.mark.skipif(not features.check("avif"), reason="Pillow build without AVIF support")
+def test_avif_source_name_is_written_as_a_url():
+    """`to_avif` writes the <source> name itself, so an awkward name needs the URL spelling too."""
+    site = {P("i.html"): b'<img src="img/with space.png">', P("img/with space.png"): banner_png()}
+    assert T.to_avif(site) == {P("img/with space.png"): P("img/with space.avif")}
+    assert 'srcset="img/with%20space.avif"' in site[P("i.html")].decode()
