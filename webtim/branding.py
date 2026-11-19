@@ -1,3 +1,5 @@
+import sys
+
 import click
 
 from webtim import __version__
@@ -19,7 +21,7 @@ class BrandedCommand(click.Command):
 
 def show_banner():
     """Print once on an interactive terminal; redirected output stays machine-readable."""
-    if click.get_text_stream("stdout").isatty():
+    if sys.stdout is not None and sys.stdout.isatty():
         click.echo()
         click.secho(BANNER, bold=True)
         click.echo()
